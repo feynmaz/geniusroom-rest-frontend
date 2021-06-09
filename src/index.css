@@ -11,3 +11,79 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.characters{
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  font-weight: bold;
+  padding-right: 20px;
+}
+.source{
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  font-style: italic;
+  padding-left: 20px;
+}
+.content{
+  text-align: left;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.comment{
+  text-align: left;
+  padding-left: 20px;
+}
+.comment-author{
+  font-weight: bold;
+}
+.add-comment{
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px 30px;
+}
+.article-card{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.list-rating{
+  text-align: left;
+  padding: 20px 30px;
+}
+.new-comment{
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px 30px;
+}
+
+textarea {
+  resize: none;
+}
+
+.rate {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.rating {
+  text-align: center;
+}
+
+.rate-up,
+.rate-down {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.rate-up svg,
+.rate-down svg {
+  transition: fill .5s linear;
+}
+
+.rate-up:hover svg{
+  fill: #7DD6E5;
+}
+.rate-down:hover svg {
+  fill: #EC8AC2;
+}
