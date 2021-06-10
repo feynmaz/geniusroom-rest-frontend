@@ -1,23 +1,32 @@
+
 import { React, useEffect, useState } from 'react'
 import { useHistory } from "react-router"
 import axios from "axios"
 import { dateFormat } from 'dateformat'
-import Moment from 'moment'
+import moment from 'moment'
 
-// const dateFormat =  new Intl.DateTimeFormat('ru', {
-//     year: 'numeric',
-//     month: '2-digit',
-//     day: '2-digit',
-//     hour: '2-digit',
-//     minute: '2-digit',
-//     second: '2-digit'
-// })
 
 export const ArticleDetail = ({id}) => {
+    const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
+    const [ais, setAis] = useState([])
     const [article, setArticle] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const token = localStorage.getItem('token')
+  
+    function changeCommentText (event)  {
+        setCommentText(event.target.value)
+    }
+
+    function refactorComments (comments) {
+        let refactoredComments = []
+        refactoredComments = comments.map(item => (
+            {...item,
+            created : moment(new Date(item['created'])).format('DD.MM.YYYY, hh:mm')}
+        ))
+      
+        return refactoredComments
+    }
 
     useEffect(async () => {
         const responseArticle = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/`)
@@ -26,10 +35,13 @@ export const ArticleDetail = ({id}) => {
 
         const responseComments = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/comments`)
         const dataComments = await responseComments.json()
-        setComments(dataComments) // после изменения состояния происходит рендеринг
+        const refactoredComments = refactorComments(dataComments)
+        
+        setComments(refactoredComments) // после изменения состояния происходит рендеринг
+        const responseAis = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/ais`)
+        const dataAis = await responseAis.json()
+        setAis(dataAis)
         setIsLoading(item => !item)
-
-
 
     }, [])
 
@@ -48,24 +60,28 @@ export const ArticleDetail = ({id}) => {
             'Authorization': 'token '+ token
         }
         const body = {
-            content: 'GG'
+            content: commentText
         }
         const comment = await axios.post(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`, body,
             {
                 headers: headers
             })
-        let date = new Date(comment.data['created'])
-        // TODO: привести дату к желаемому формату
-        setComments([...comments, {...comment.data, [comment.data.created] : date}])
+            
+        const refactoredComment = refactorComments(Array(comment.data))    
+     
+        setComments([...comments, {
+            ...refactoredComment[0]
+        }])
     }
 
+    
     return (
      isLoading ?
             <h1>Загрузка</h1>
             :
             <div className={'article'}>
                 <div className={'card'}>
-                    <div className={'card-body'}><img src={article.image} alt={'No image'} /></div>
+                    <div className={'card-body'}><img src={'http://127.0.0.1:8000' + article.image} alt={'mainImage'} /></div>
                 </div>
                 <h2>{article.title}</h2>
                 <div className={'content'}>{article.content}</div>
@@ -89,28 +105,41 @@ export const ArticleDetail = ({id}) => {
                     </div>
                 </div>
 
-                <div className={'comments'}>
-                {comments.map((comment, index) => (
-                    <div className={'comment-card card col-lg-4 d-flex align-items-stretch'}>
-                        <div className={'card-body'}>
-                            <div className={'comment'} key={index}>
-                                <div className={'comment-author'}>({comment.created}) {comment.author}:</div>
-                                <div className={'comment-content'}>{comment.content}</div>
+                <div className="ais">
+                    {ais.map((ai, index) => (
+
+                        <div className={'comment-card card col-lg-4 d-flex align-items-stretch'}>
+                            <div className={'card-body'}>
+                                <div className="ai" key={index}>
+                                    <div className='ai-image'><img src={`http://127.0.0.1:8000` + ai.image} alt="additionalImage" /></div>
+                                    <div className='ai-caption'><strong>{ai.caption}</strong></div>
+                                </div>  
                             </div>
                         </div>
-                    </div>
-                ))}
+                            
+                    ))}
+                </div>
+
+                <div className={'comments'}>
+                    {comments.map((comment, index) => {
+                        return <div key={index} className={'comment-card card col-lg-4 d-flex align-items-stretch'}>
+                            <div className={'card-body'}>
+                                <div className={'comment'} key={index}>
+                                    <div className={'comment-author'}>({comment.created}) {comment.author}:</div>
+                                    <div className={'comment-content'}>{comment.content}</div>
+                                </div>
+                            </div>
+                        </div>
+                    })}
                 </div>
 
                 <div className={'new-comment'} hidden={!token}>
-                    <textarea rows={10} cols={100}>
+                    <textarea onChange={function(event) {return changeCommentText(event)}} value={commentText} rows={10} cols={100}>
                     </textarea>
                 </div>
                 <div className={'add-comment'}>
                     <button disabled={!token} className={'btn btn-primary'} onClick={addComment}>Добавить комментарий</button>
                 </div>
-
-
             </div>
 
     )
