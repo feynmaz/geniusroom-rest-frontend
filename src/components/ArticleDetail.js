@@ -81,7 +81,7 @@ export const ArticleDetail = ({id}) => {
             :
             <div className={'article'}>
                 <div className={'card'}>
-                    <div className={'card-body'}><img src={'http://127.0.0.1:8000' + article.image} alt={'mainImage'} /></div>
+                    <div className={'card-body'}><img src={article.image_url} alt={'mainImage'} /></div>
                 </div>
                 <h2>{article.title}</h2>
                 <div className={'content'}>{article.content}</div>
