@@ -1,9 +1,11 @@
-import { React, useEffect, useState } from 'react'
-import { useHistory } from "react-router";
+import { React, useEffect, useState, useRef } from 'react'
 import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router";
 import { Pagination } from './Pagination'
+import { Article } from './Article'
+import { Menu } from './Menu'
 
-export const ArticleList = () => {
+export const ArticleList = ({ params }) => {
     const history = useHistory()
     const location = useLocation()
     const [totalPages, setTotalPages] = useState()
@@ -11,6 +13,9 @@ export const ArticleList = () => {
     const [articles, setArticles] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
+    const listArticles = useRef()
+
+    const pathname = location.pathname
     const line = location.search
 
     function getPageNumber() {
@@ -23,41 +28,52 @@ export const ArticleList = () => {
         return pageNumber
     }
 
+    function changeStyleBlockArticles() {
+        if (listArticles.current.classList.contains('squeeze')) {
+            setTimeout(() => {
+                listArticles.current.classList.remove('squeeze')
+            }, 300)
+        } else {
+            listArticles.current.classList.add('squeeze')
+        }
+    }
+
     useEffect(async () => {
         setIsLoading(true)
         const pageNumber = getPageNumber()
-        const response = await fetch('http://127.0.0.1:8000/api/v1/articles/?page=' + pageNumber)
+        let response
+        params
+            ? response = await fetch(`http://127.0.0.1:8000/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber)
+            : response = await fetch('http://127.0.0.1:8000/api/v1/articles/?page=' + pageNumber)
         const data = await response.json()
         setArticles(data.results) // после изменения состояния происходит рендеринг
         // TODO: вместо цифры переменную с количество статей на первой странице
         setTotalPages(Math.ceil(data.count / 5))
         setCurrentPage(pageNumber)
         setIsLoading(false)
-    }, [line])
+    }, [pathname, line])
+
 
     return (
-        <div>
-            <div>ArticleList</div>
-            <button onClick={() => history.push('/login')}>Login</button>
+        <div className="container-articles">
+            <div className="header">
+                <Menu changeStyleBlockArticles={changeStyleBlockArticles} />
+                <button onClick={() => history.push('/login')}>Login</button>
+            </div>
 
-            { isLoading ? <h1>Загрузка</h1> :
-                <>
-                    {articles.map((article, index) => (
-                        <div className="card article-card">
-                            <div className="card-body">
-                                <div className='article' key={index}>
-                                    <h3 onClick={() => history.push(`/${article.id}/`)}>{article.title}</h3>
-                                    <div className={'content'}>{article.content.slice(100)}</div>
-                                    <div className={'list-rating'}>{article.rating}</div>
-                                </div>
-                            </div>
-                        </div>
+            <div className="list-articles-wrapper">
+                <div ref={listArticles} className="list-articles">
 
-                    ))}
-
-                    <Pagination totalPages={totalPages} currentPage={currentPage} />
-                </>
-            }
+                    {isLoading ? <h1>Загрузка</h1> :
+                        <>
+                            {articles.map((article, index) => (
+                                <Article data={article} key={index} />
+                            ))}
+                            <Pagination totalPages={totalPages} currentPage={currentPage} />
+                        </>
+                    }
+                </div>
+            </div>
         </div>
     )
 }

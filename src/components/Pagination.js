@@ -13,26 +13,26 @@ export const Pagination = ({ totalPages, currentPage }) => {
     return (
         <>
         {totalPages !== 1 &&
-            <ul class="pagination">
+            <ul className="pagination">
                 {currentPage != 1 &&
-                  <li class="page-item">
+                  <li className="page-item">
                     
                   <Link to={{search: `?page=${+currentPage - 1}`}}>
-                          <span class="page-link">Previous</span>
+                          <span className="page-link">Previous</span>
                       </Link>
                   </li>
                 }
               
                 {
                     [...Array(totalPages).keys()].map(page => (
-                        <li class={page + 1 == currentPage ? "page-item active" : "page-item"} onClick={(event) => changePage(event)}><a className="page-link" data-page={page + 1}>{page + 1}</a></li>
+                        <li key={page} className={page + 1 == currentPage ? "page-item active" : "page-item"} onClick={(event) => changePage(event)}><a className="page-link" data-page={page + 1}>{page + 1}</a></li>
                     ))
                 }
                 
                 {currentPage != totalPages &&
-                    <li class="page-item">
+                    <li className="page-item">
                         <Link to={{search: `?page=${+currentPage + 1}`}}>
-                            <span class="page-link">Next</span>
+                            <span className="page-link">Next</span>
                         </Link>
                     </li>
                 }

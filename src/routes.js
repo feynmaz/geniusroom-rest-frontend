@@ -17,6 +17,10 @@ export const useRoutes = () => {
             <Route path='/login' exact>
                 <Login />
             </Route>
+            <Route path='/:superRubric/:rubric' exact render={({match}) => (
+                <ArticleList params={match.params} />
+            )}>
+            </Route>
             <Route path='/:id' exact render={({match}) => (
                 <ArticleDetail id={match.params.id} />
             )}>

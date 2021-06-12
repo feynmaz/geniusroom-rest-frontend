@@ -87,3 +87,76 @@ textarea {
 .rate-down:hover svg {
   fill: #EC8AC2;
 }
+
+.menu {
+  width: fit-content;
+  padding-left: 10px;
+}
+
+.menu-title-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu-title-arrow {
+  margin-right: 10px;
+  width: 10px;
+  height: 10px;
+  border-top: 3px solid #000000;
+  border-right: 3px solid #000000;
+  transition: all .4s ease;
+  transform: rotate(45deg);
+}
+
+.active-arrow {
+  transform: rotate(135deg);
+}
+
+.menu-items {
+  position: absolute;
+  z-index: 100;
+  height: 0;
+  overflow: hidden;
+  transition: height .2s linear;
+  padding-left: 10px;
+}
+
+.super-rubric {
+  font-weight: 700;
+}
+
+.list-item {
+  display: block;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.active {
+  height: 250px;
+  transition: height .4s linear;
+}
+
+.list-articles-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.list-articles {
+  width: 100%;
+  transition: width .4s linear;
+}
+
+.squeeze {
+  width: 82%;
+  transition: width .2s linear;
+}
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 0;
+}
