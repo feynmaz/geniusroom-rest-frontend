@@ -60,7 +60,6 @@ export const ArticleList = ({ params }) => {
                 <Menu changeStyleBlockArticles={changeStyleBlockArticles} />
                 <button onClick={() => history.push('/login')}>Login</button>
             </div>
-
             <div className="list-articles-wrapper">
                 <div ref={listArticles} className="list-articles">
 

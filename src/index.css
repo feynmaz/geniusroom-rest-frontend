@@ -160,3 +160,15 @@ textarea {
   align-items: flex-start;
   padding: 20px 0;
 }
+.content-thumbnail{
+  display: flex;
+}
+.title:hover{
+  text-decoration: underline;
+  color: blue;
+
+}
+.title{
+  width: fit-content;
+  cursor: pointer;
+}

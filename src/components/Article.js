@@ -9,9 +9,12 @@ export const Article = ({data}) => {
         <div className="card article-card">
             <div className="card-body">
                 <div className='article'>
-                    <h3 onClick={() => history.push(`/${data.id}/`)}>{data.title}</h3>
-                    <div className={'content'}>{data.content.slice(100)}</div>
-                    <div className={'list-rating'}>{data.rating}</div>
+                    <h3 className={'title'} onClick={() => history.push(`/${data.id}/`)}>{data.title}</h3>
+                    <div className={'content-thumbnail'}>
+                        <div className={'thumbnail'}> <img src={data.image} alt="thumbnail" width='90'/> </div>
+                        <div className={'content'}>{data.content.slice(0, 100)}...</div>
+                    </div>
+                    <div className={'list-rating'}>Рейтинг: {data.rating}</div>
                 </div>
             </div>
         </div>
