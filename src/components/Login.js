@@ -1,14 +1,17 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { useHistory } from "react-router";
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import axios from "axios"
+import { AuthContext } from "../context/AuthContext";
 
 export const Login = () => {
     const [form, setForm] = useState({
         username : '',
         password: ''
     })
+
+    const { login } = useContext(AuthContext)
     const history = useHistory()
 
     const changeInputHandler = event => {
@@ -22,8 +25,8 @@ export const Login = () => {
         }
         const tokened = await axios.post(`http://127.0.0.1:8000/api/v1/users/api-token-auth/`, body)
         if (tokened) {
-            localStorage.setItem('token', tokened.data['token'])
-            localStorage.setItem('username', tokened.data['username'])
+            debugger
+            login(tokened.data['token'], tokened.data['user_id'])
             history.push('/profile')
         }
     }

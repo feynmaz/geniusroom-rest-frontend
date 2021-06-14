@@ -1,9 +1,10 @@
-import { React, useEffect, useState, useRef } from 'react'
+import { React, useEffect, useState, useRef, useContext } from 'react'
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Pagination } from './Pagination'
 import { Article } from './Article'
 import { Menu } from './Menu'
+import { AuthContext } from '../context/AuthContext'
 
 export const ArticleList = ({ params }) => {
     const history = useHistory()
@@ -12,6 +13,9 @@ export const ArticleList = ({ params }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [articles, setArticles] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+
+    const { token } = useContext(AuthContext)
+    console.log(token)
 
     const listArticles = useRef()
 
@@ -58,7 +62,9 @@ export const ArticleList = ({ params }) => {
         <div className="container-articles">
             <div className="header">
                 <Menu changeStyleBlockArticles={changeStyleBlockArticles} />
-                <button onClick={() => history.push('/login')}>Login</button>
+                <button onClick={() => history.push('/login')}>
+                    {token ? 'Logout' : 'Login'}
+                </button>
             </div>
             <div className="list-articles-wrapper">
                 <div ref={listArticles} className="list-articles">

@@ -1,14 +1,19 @@
 import React from 'react'
 import { useRoutes } from "./routes.js";
 import { BrowserRouter } from 'react-router-dom'
+import { useAuth } from './hooks/auth.js';
+import { AuthContext } from './context/AuthContext.js';
 
 function App() {
+  const { token, userId, login } = useAuth() 
   const routes = useRoutes()
   return (
       <BrowserRouter>
-         <div className="App">
-          {routes}
-        </div>
+        <AuthContext.Provider value={{token, userId, login}}>
+          <div className="App">
+            {routes}
+          </div>
+        </AuthContext.Provider>
       </BrowserRouter>
   )
 }

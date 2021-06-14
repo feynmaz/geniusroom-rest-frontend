@@ -1,9 +1,10 @@
 
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useState, useContext } from 'react'
 import { useHistory } from "react-router"
 import axios from "axios"
 import { dateFormat } from 'dateformat'
 import moment from 'moment'
+import { AuthContext } from '../context/AuthContext'
 
 
 export const ArticleDetail = ({id}) => {
@@ -12,7 +13,7 @@ export const ArticleDetail = ({id}) => {
     const [ais, setAis] = useState([])
     const [article, setArticle] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    const token = localStorage.getItem('token')
+    const { token, userId } = useContext(AuthContext)
   
     function changeCommentText (event)  {
         setCommentText(event.target.value)
@@ -41,16 +42,17 @@ export const ArticleDetail = ({id}) => {
         const responseAis = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/ais`)
         const dataAis = await responseAis.json()
         setAis(dataAis)
+
         setIsLoading(item => !item)
 
     }, [])
 
 
-    const changeRating = async (sign) => {
-        const body = {
-            rating: sign
-        }
-        const updated = await axios.post(`http://127.0.0.1:8000/api/v1/articles/${id}/`, body)
+    const changeRating = async (newValue) => {
+        // if not token then not update
+        const updated = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/`, {
+            rating: newValue
+        })
         setArticle(updated.data)
     }
 
@@ -60,7 +62,9 @@ export const ArticleDetail = ({id}) => {
             'Authorization': 'token '+ token
         }
         const body = {
-            content: commentText
+            content: commentText,
+            author: userId,
+            article: article.id,
         }
         const comment = await axios.post(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`, body,
             {
@@ -90,14 +94,14 @@ export const ArticleDetail = ({id}) => {
                 <div className={'created_at'}>{article.created_at}</div>
 
                 <div className={'rate'}>
-                    <div className={'rate-up'} disabled={!token} onClick={() => changeRating('+')}>
+                    <div className={'rate-up'} onClick={() => changeRating(article.rating + 1)}>
                         <svg fill="#209F52" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 26h32L18 10 2 26z"></path>
                         </svg>
                     </div>
                     <div className={'rating'}>{article.rating}</div>
-                    <div className={'rate-down'} disabled={!token} onClick={() => changeRating('-')}>
+                    <div className={'rate-down'} onClick={() => changeRating(article.rating - 1)}>
                         <svg fill="#CB1D1D" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 10h32L18 26 2 10z"></path>
