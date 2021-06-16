@@ -56,6 +56,13 @@ export const Login = () => {
             <p className="forgot-password text-right">
                 Forgot <a href="#">password?</a>
             </p>
+            <div className='link-to-registration'>
+                Don`t have an account?<a href={() => history.push('/register')}>&nbsp;Create</a>
+            </div>
+
+            <div className='link-to-registration'>
+                Don`t have an account?&nbsp;<a href="http://127.0.0.1:3000/register/">Create</a>
+            </div>
         </form>
     )
 }

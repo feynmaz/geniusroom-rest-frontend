@@ -8,6 +8,7 @@ import { AuthContext } from '../context/AuthContext'
 
 
 export const ArticleDetail = ({id}) => {
+    const history = useHistory()
     const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
     const [ais, setAis] = useState([])
@@ -34,12 +35,12 @@ export const ArticleDetail = ({id}) => {
         const dataArticle = await responseArticle.json()
         setArticle(dataArticle) // после изменения состояния происходит рендеринг
 
-        const responseComments = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/comments`)
+        const responseComments = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`)
         const dataComments = await responseComments.json()
         const refactoredComments = refactorComments(dataComments)
         
         setComments(refactoredComments) // после изменения состояния происходит рендеринг
-        const responseAis = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/ais`)
+        const responseAis = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/ais/`)
         const dataAis = await responseAis.json()
         setAis(dataAis)
 
@@ -84,6 +85,11 @@ export const ArticleDetail = ({id}) => {
             <h1>Загрузка</h1>
             :
             <div className={'article'}>
+                <div className="detail-login-button">
+                    <button onClick={() => history.push('/login')}>
+                        {token ? 'Logout' : 'Login'}
+                    </button>
+                </div>
                 <div className={'card'}>
                     <div className={'card-body'}><img src={article.image_url} alt={'mainImage'} /></div>
                 </div>
@@ -94,14 +100,14 @@ export const ArticleDetail = ({id}) => {
                 <div className={'created_at'}>{article.created_at}</div>
 
                 <div className={'rate'}>
-                    <div className={'rate-up'} onClick={() => changeRating(article.rating + 1)}>
+                    <div className={'rate-up'} disabled={!token} onClick={() => changeRating(article.rating + 1)}>
                         <svg fill="#209F52" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 26h32L18 10 2 26z"></path>
                         </svg>
                     </div>
                     <div className={'rating'}>{article.rating}</div>
-                    <div className={'rate-down'} onClick={() => changeRating(article.rating - 1)}>
+                    <div className={'rate-down'} disabled={!token} onClick={() => changeRating(article.rating - 1)}>
                         <svg fill="#CB1D1D" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 10h32L18 26 2 10z"></path>
@@ -115,7 +121,7 @@ export const ArticleDetail = ({id}) => {
                         <div className={'comment-card card col-lg-4 d-flex align-items-stretch'}>
                             <div className={'card-body'}>
                                 <div className="ai" key={index}>
-                                    <div className='ai-image'><img src={`http://127.0.0.1:8000` + ai.image} alt="additionalImage" /></div>
+                                    <div className='ai-image'><img src={ai.image} alt="additionalImage" /></div>
                                     <div className='ai-caption'><strong>{ai.caption}</strong></div>
                                 </div>  
                             </div>

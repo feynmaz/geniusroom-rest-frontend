@@ -1,6 +1,6 @@
 import { React, useEffect, useState, useRef, useContext } from 'react'
-import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router";
+import { useLocation } from "react-router-dom"
+import { useHistory } from "react-router"
 import { Pagination } from './Pagination'
 import { Article } from './Article'
 import { Menu } from './Menu'
@@ -15,7 +15,6 @@ export const ArticleList = ({ params }) => {
     const [isLoading, setIsLoading] = useState(true)
 
     const { token } = useContext(AuthContext)
-    console.log(token)
 
     const listArticles = useRef()
 
