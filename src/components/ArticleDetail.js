@@ -1,7 +1,6 @@
 import { React, useEffect, useState, useContext } from 'react'
 import { useHistory } from "react-router"
 import axios from "axios"
-import { dateFormat } from 'dateformat'
 import moment from 'moment'
 import { AuthContext } from '../context/AuthContext'
 
@@ -9,12 +8,16 @@ import { AuthContext } from '../context/AuthContext'
 
 export const ArticleDetail = ({id}) => {
     const history = useHistory()
+
+    const [article, setArticle] = useState()
+    const [rating, setRating] = useState()
+    const [ais, setAis] = useState([])
     const [commentText, setCommentText] = useState('')
     const [comments, setComments] = useState([])
-    const [ais, setAis] = useState([])
-    const [article, setArticle] = useState()
+    
+
     const [isLoading, setIsLoading] = useState(true)
-    const { access, validateAccess, validateRefresh, logout } = useContext(AuthContext)
+    const { access, validateAccess, logout } = useContext(AuthContext)
   
     function changeCommentText (event)  {
         setCommentText(event.target.value)
@@ -35,11 +38,15 @@ export const ArticleDetail = ({id}) => {
         const dataArticle = await responseArticle.json()
         setArticle(dataArticle) // после изменения состояния происходит рендеринг
 
+        const responseRating = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/rating`)
+        const dataRating = await responseRating.json()
+        setRating(dataRating['rating_change'])
+
         const responseComments = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`)
         const dataComments = await responseComments.json()
-        const refactoredComments = refactorComments(dataComments)
-        
+        const refactoredComments = refactorComments(dataComments) 
         setComments(refactoredComments) // после изменения состояния происходит рендеринг
+
         const responseAis = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/ais/`)
         const dataAis = await responseAis.json()
         setAis(dataAis)
@@ -49,18 +56,19 @@ export const ArticleDetail = ({id}) => {
     }, [])
 
 
+
     const changeRating = async (newValue) => {
         const access = await validateAccess(history)
         const headers = {
             'Authorization': 'Bearer ' + access
         }
         const body = {
-            rating: newValue
+            rating_change: newValue
         }  
-        const updated = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/update/`, body, {
+        const updatedRating = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/rating/`, body, {
                 headers: headers
             })
-        setArticle(updated.data)    
+        setRating(updatedRating.data['rating_change'])    
     }
 
     const addComment = async () => {
@@ -116,14 +124,14 @@ export const ArticleDetail = ({id}) => {
                 <div className={'created_at'}>{article.created_at}</div>
 
                 <div className={'rate'}>
-                    <div className={'rate-up'} disabled={!access} onClick={() => changeRating(article.rating + 1)}>
+                    <div className={'rate-up'} disabled={!access} onClick={() => changeRating(rating + 1)}>
                         <svg fill="#209F52" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 26h32L18 10 2 26z"></path>
                         </svg>
                     </div>
-                    <div className={'rating'}>{article.rating}</div>
-                    <div className={'rate-down'} disabled={!access} onClick={() => changeRating(article.rating - 1)}>
+                    <div className={'rating'}>{rating}</div>
+                    <div className={'rate-down'} disabled={!access} onClick={() => changeRating(rating - 1)}>
                         <svg fill="#CB1D1D" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 10h32L18 26 2 10z"></path>
