@@ -6,6 +6,7 @@ import moment from 'moment'
 import { AuthContext } from '../context/AuthContext'
 
 
+
 export const ArticleDetail = ({id}) => {
     const history = useHistory()
     const [commentText, setCommentText] = useState('')
@@ -13,7 +14,7 @@ export const ArticleDetail = ({id}) => {
     const [ais, setAis] = useState([])
     const [article, setArticle] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    const { access, grantAccess, closeAccess } = useContext(AuthContext)
+    const { access, validateAccess, validateRefresh, logout } = useContext(AuthContext)
   
     function changeCommentText (event)  {
         setCommentText(event.target.value)
@@ -47,44 +48,23 @@ export const ArticleDetail = ({id}) => {
 
     }, [])
 
-    const getNewAccess = async () => {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/users/token/refresh/`)
-        grantAccess(response.data['access'])
-    }
 
     const changeRating = async (newValue) => {
-
+        const access = await validateAccess(history)
         const headers = {
             'Authorization': 'Bearer ' + access
         }
         const body = {
             rating: newValue
-        }
-        try {
-            const updated = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/update/`, body, {
+        }  
+        const updated = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/update/`, body, {
                 headers: headers
             })
-                  
-            switch(updated.status){
-                case 200:
-                    setArticle(updated.data)
-                    break
-    
-                case 401:
-                    getNewAccess()
-                    break
-    
-                default:
-                    console.log(updated.data)
-    
-            }
-        } catch(e) {  
-            getNewAccess()
-        }
-        
+        setArticle(updated.data)    
     }
 
     const addComment = async () => {
+        const access = validateAccess(history)
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + access
@@ -107,9 +87,10 @@ export const ArticleDetail = ({id}) => {
         }])
     }
 
-    const logout = () => {
-        closeAccess(access)
+    const clickLogout = () => {
+        logout(history)
     }
+
 
     
     return (
@@ -121,7 +102,7 @@ export const ArticleDetail = ({id}) => {
                     <button hidden={access} onClick={() => history.push('/login')}>
                         Login
                     </button>
-                    <button hidden={!access} onClick={logout}>
+                    <button hidden={!access} onClick={clickLogout}>
                         Logout
                     </button>
                 </div>

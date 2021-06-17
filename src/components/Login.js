@@ -9,7 +9,7 @@ export const Login = () => {
         password: ''
     })
 
-    const { grantAccess } = useContext(AuthContext)
+    const { login } = useContext(AuthContext)
     const history = useHistory()
 
     const changeInputHandler = event => {
@@ -23,7 +23,7 @@ export const Login = () => {
         }
         const jwt = await axios.post(`http://127.0.0.1:8000/api/v1/users/token/`, body)
         if (jwt) {
-            grantAccess(jwt.data['access'])
+            login(jwt.data['access'], jwt.data['refresh'])
             history.push('/profile')
         }
     }

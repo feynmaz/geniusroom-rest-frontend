@@ -5,11 +5,11 @@ import { useAuth } from './hooks/auth.js';
 import { AuthContext } from './context/AuthContext.js';
 
 function App() {
-  const { access, grantAccess, closeAccess } = useAuth() 
+  const {refresh, access, validateAccess, validateRefresh, login, logout } = useAuth() 
   const routes = useRoutes()
   return (
       <BrowserRouter>
-        <AuthContext.Provider value={{access, grantAccess, closeAccess}}>
+        <AuthContext.Provider value={{refresh, access, validateAccess, validateRefresh, login, logout}}>
           <div className="App">
             {routes}
           </div>
