@@ -1,4 +1,3 @@
-
 import { React, useEffect, useState, useContext } from 'react'
 import { useHistory } from "react-router"
 import axios from "axios"
@@ -14,7 +13,7 @@ export const ArticleDetail = ({id}) => {
     const [ais, setAis] = useState([])
     const [article, setArticle] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    const { token, userId } = useContext(AuthContext)
+    const { access, grantAccess, closeAccess } = useContext(AuthContext)
   
     function changeCommentText (event)  {
         setCommentText(event.target.value)
@@ -48,26 +47,55 @@ export const ArticleDetail = ({id}) => {
 
     }, [])
 
+    const getNewAccess = async () => {
+        const response = await axios.get(`http://127.0.0.1:8000/api/v1/users/token/refresh/`)
+        grantAccess(response.data['access'])
+    }
 
     const changeRating = async (newValue) => {
-        // if not token then not update
-        const updated = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/`, {
+
+        const headers = {
+            'Authorization': 'Bearer ' + access
+        }
+        const body = {
             rating: newValue
-        })
-        setArticle(updated.data)
+        }
+        try {
+            const updated = await axios.patch(`http://127.0.0.1:8000/api/v1/articles/${id}/update/`, body, {
+                headers: headers
+            })
+                  
+            switch(updated.status){
+                case 200:
+                    setArticle(updated.data)
+                    break
+    
+                case 401:
+                    getNewAccess()
+                    break
+    
+                default:
+                    console.log(updated.data)
+    
+            }
+        } catch(e) {  
+            getNewAccess()
+        }
+        
     }
 
     const addComment = async () => {
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'token '+ token
+            'Authorization': 'Bearer ' + access
         }
         const body = {
             content: commentText,
-            author: userId,
+            author: '',
             article: article.id,
         }
-        const comment = await axios.post(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`, body,
+        const comment = await axios.post(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`,
+            body,
             {
                 headers: headers
             })
@@ -79,15 +107,22 @@ export const ArticleDetail = ({id}) => {
         }])
     }
 
+    const logout = () => {
+        closeAccess(access)
+    }
+
     
     return (
      isLoading ?
             <h1>Загрузка</h1>
             :
             <div className={'article'}>
-                <div className="detail-login-button">
-                    <button onClick={() => history.push('/login')}>
-                        {token ? 'Logout' : 'Login'}
+                <div className="detail-login-buttons">
+                    <button hidden={access} onClick={() => history.push('/login')}>
+                        Login
+                    </button>
+                    <button hidden={!access} onClick={logout}>
+                        Logout
                     </button>
                 </div>
                 <div className={'card'}>
@@ -100,14 +135,14 @@ export const ArticleDetail = ({id}) => {
                 <div className={'created_at'}>{article.created_at}</div>
 
                 <div className={'rate'}>
-                    <div className={'rate-up'} disabled={!token} onClick={() => changeRating(article.rating + 1)}>
+                    <div className={'rate-up'} disabled={!access} onClick={() => changeRating(article.rating + 1)}>
                         <svg fill="#209F52" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 26h32L18 10 2 26z"></path>
                         </svg>
                     </div>
                     <div className={'rating'}>{article.rating}</div>
-                    <div className={'rate-down'} disabled={!token} onClick={() => changeRating(article.rating - 1)}>
+                    <div className={'rate-down'} disabled={!access} onClick={() => changeRating(article.rating - 1)}>
                         <svg fill="#CB1D1D" aria-hidden="true" className="m0 svg-icon iconArrowUpLg" width="36" height="36"
                              viewBox="0 0 36 36">
                             <path d="M2 10h32L18 26 2 10z"></path>
@@ -143,12 +178,12 @@ export const ArticleDetail = ({id}) => {
                     })}
                 </div>
 
-                <div className={'new-comment'} hidden={!token}>
+                <div className={'new-comment'} hidden={!access}>
                     <textarea onChange={function(event) {return changeCommentText(event)}} value={commentText} rows={10} cols={100}>
                     </textarea>
                 </div>
                 <div className={'add-comment'}>
-                    <button disabled={!token} className={'btn btn-primary'} onClick={addComment}>Добавить комментарий</button>
+                    <button disabled={!access} className={'btn btn-primary'} onClick={addComment}>Добавить комментарий</button>
                 </div>
             </div>
 

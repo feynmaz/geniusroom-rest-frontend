@@ -172,7 +172,7 @@ textarea {
   width: fit-content;
   cursor: pointer;
 }
-.detail-login-button{
+.detail-login-buttons{
   text-align: right;
 }
 div[disabled]

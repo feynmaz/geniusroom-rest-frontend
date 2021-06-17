@@ -14,7 +14,7 @@ export const ArticleList = ({ params }) => {
     const [articles, setArticles] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
-    const { token } = useContext(AuthContext)
+    const { access } = useContext(AuthContext)
 
     const listArticles = useRef()
 
@@ -62,7 +62,7 @@ export const ArticleList = ({ params }) => {
             <div className="header">
                 <Menu changeStyleBlockArticles={changeStyleBlockArticles} />
                 <button onClick={() => history.push('/login')}>
-                    {token ? 'Logout' : 'Login'}
+                    {access ? 'Logout' : 'Login'}
                 </button>
             </div>
             <div className="list-articles-wrapper">

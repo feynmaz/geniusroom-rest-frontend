@@ -1,17 +1,15 @@
 import React, { useState, useContext } from "react"
-import { useHistory } from "react-router";
-import Form from "react-bootstrap/Form"
-import Button from "react-bootstrap/Button"
+import { useHistory } from "react-router"
 import axios from "axios"
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext"
 
 export const Login = () => {
     const [form, setForm] = useState({
-        username : '',
+        username: '',
         password: ''
     })
 
-    const { login } = useContext(AuthContext)
+    const { grantAccess } = useContext(AuthContext)
     const history = useHistory()
 
     const changeInputHandler = event => {
@@ -23,10 +21,9 @@ export const Login = () => {
             username: form.username,
             password: form.password,
         }
-        const tokened = await axios.post(`http://127.0.0.1:8000/api/v1/users/api-token-auth/`, body)
-        if (tokened) {
-            debugger
-            login(tokened.data['token'], tokened.data['user_id'])
+        const jwt = await axios.post(`http://127.0.0.1:8000/api/v1/users/token/`, body)
+        if (jwt) {
+            grantAccess(jwt.data['access'])
             history.push('/profile')
         }
     }
