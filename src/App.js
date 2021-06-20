@@ -7,6 +7,7 @@ import { AuthContext } from './context/AuthContext.js';
 function App() {
   const {refresh, access, validateAccess, validateRefresh, login, logout } = useAuth() 
   const routes = useRoutes()
+  console.log(access)
   return (
       <BrowserRouter>
         <AuthContext.Provider value={{refresh, access, validateAccess, validateRefresh, login, logout}}>
