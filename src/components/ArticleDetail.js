@@ -43,21 +43,14 @@ export const ArticleDetail = ({id}) => {
         async function fetchData() {
         const responseArticle = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/`)
         const dataArticle = await responseArticle.json()
-        setArticle(dataArticle) // после изменения состояния происходит рендеринг
-
-        const responseRating = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/rating/`)
-        const dataRating = await responseRating.json()
-        setRating(dataRating['rating'])
-
-        const responseComments = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/comments/`)
-        const dataComments = await responseComments.json()
-        const refactoredComments = refactorComments(dataComments['results']) 
-        setComments(refactoredComments)
-
-        const responseAis = await fetch(`http://127.0.0.1:8000/api/v1/articles/${id}/ais/`)
-        const dataAis = await responseAis.json()
-        setAis(dataAis)
         
+        setArticle(dataArticle) // после изменения состояния происходит рендеринг
+        setRating(dataArticle['rating'])
+        setAis(dataArticle['ais'])
+
+        const refactored = refactorComments(dataArticle['comments']) 
+        setComments(refactored)
+
         const headers = {
             'Authorization': 'Bearer ' + access
         }
@@ -79,7 +72,6 @@ export const ArticleDetail = ({id}) => {
                 setRatingUpDisabled(false)
                 break
             default:
-                console.log('default')
                 break
         } 
         
@@ -157,7 +149,7 @@ export const ArticleDetail = ({id}) => {
                     </button>
                 </div>
                 <div className={'card'}>
-                    <div className={'card-body'}><img src={article.image_url} alt={'mainImage'} /></div>
+                    <div className={'card-body'}><img src={article.image} alt={'mainImage'} /></div>
                 </div>
                 <h2>{article.title}</h2>
                 <div className={'content'}>{article.content}</div>
