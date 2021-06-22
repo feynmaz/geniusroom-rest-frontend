@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react"
 import { useHistory } from "react-router"
+import { Link } from "react-router-dom"
 import axios from "axios"
 import { AuthContext } from "../context/AuthContext"
 
@@ -44,15 +45,11 @@ export const Login = () => {
 
             <button type="button" className="btn btn-primary btn-block" onClick={submitLogin}>Submit</button>
             <p className="forgot-password text-right">
-                Forgot <a href="#">password?</a>
+                Forgot <Link to='/reset'>password</Link>?
             </p>
             <div className='link-to-registration'>
-                Don`t have an account?&nbsp;<a className="create-account-link" onClick={() => history.push('/register')}>Create</a>
+                Don`t have an account?&nbsp;<Link to='/register'>Create</Link>
             </div>
-
-            {/* <div className='link-to-registration'>
-                Don`t have an account?&nbsp;<a href="../register/">Create</a>
-            </div> */}
         </form>
     )
 }

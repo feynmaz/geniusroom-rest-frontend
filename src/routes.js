@@ -5,6 +5,9 @@ import { Login } from './components/Login'
 import { Profile } from './components/Profile'
 import { ArticleList } from './components/ArticleList'
 import { ArticleDetail } from './components/ArticleDetail'
+import { PasswordReset } from './components/PasswordReset'
+import { ResetDone } from './components/pages/PasswordResetDone'
+import { NewPassword } from './components/NewPassword'
 
 export const useRoutes = () => {
     return (
@@ -21,6 +24,17 @@ export const useRoutes = () => {
             <Route path='/login' exact>
                 <Login />
             </Route>    
+            <Route path='/reset' exact>
+                <PasswordReset />
+            </Route>
+            <Route path='/reset_done' exact>
+                <ResetDone />
+            </Route>
+            <Route path='/new_password/:token' exact render={({match}) => (
+                <NewPassword params={match.params} />
+            )}>
+            </Route>
+            
             <Route path='/:superRubric/:rubric' exact render={({match}) => (
                 <ArticleList params={match.params} />
             )}>
@@ -29,6 +43,7 @@ export const useRoutes = () => {
                 <ArticleDetail id={match.params.id} />
             )}>
             </Route>
+            
         </Switch>
     )
 }
