@@ -51,7 +51,7 @@ export const ArticleList = ({ params }) => {
         const data = await response.json()
         setArticles(data.results) // после изменения состояния происходит рендеринг
         // TODO: вместо цифры переменную с количество статей на первой странице
-        setTotalPages(Math.ceil(data.count / 5))
+        setTotalPages(Math.ceil(data.count / 10))
         setCurrentPage(pageNumber)
         setIsLoading(false)
     }, [pathname, line])
@@ -61,6 +61,9 @@ export const ArticleList = ({ params }) => {
         <div className="container-articles">
             <div className="header">
                 <Menu changeStyleBlockArticles={changeStyleBlockArticles} />
+                <button disabled={!access} onClick={() => history.push('/profile')}>
+                    Профиль
+                </button>
                 <button onClick={() => history.push('/login')}>
                     {access ? 'Logout' : 'Login'}
                 </button>

@@ -141,12 +141,12 @@ export const ArticleDetail = ({id}) => {
             :
             <div className={'article'}>
                 <div className="detail-login-buttons">
-                    <button hidden={access} onClick={() => history.push('/login')}>
-                        Login
+                    <button onClick={() => history.push('/login')}>
+                    {access ? 'Logout' : 'Login'}
                     </button>
-                    <button hidden={!access} onClick={clickLogout}>
-                        Logout
-                    </button>
+                    <button disabled={!access} onClick={() => history.push('/profile')}>
+                        Профиль
+                    </button> 
                 </div>
                 <div className={'card'}>
                     <div className={'card-body'}><img src={article.image} alt={'mainImage'} /></div>
