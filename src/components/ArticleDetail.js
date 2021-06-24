@@ -144,8 +144,11 @@ export const ArticleDetail = ({id}) => {
                     <button onClick={() => history.push('/login')}>
                     {access ? 'Logout' : 'Login'}
                     </button>
-                    <button disabled={!access} onClick={() => history.push('/profile')}>
+                    <button hidden={!access} onClick={() => history.push('/profile')}>
                         Профиль
+                    </button> 
+                    <button hidden={!access} onClick={() => history.push('/')}>
+                        Главная
                     </button> 
                 </div>
                 <div className={'card'}>

@@ -41,21 +41,24 @@ export const ArticleList = ({ params }) => {
         }
     }
 
-    useEffect(async () => {
-        setIsLoading(true)
-        const pageNumber = getPageNumber()
-        let response
-        params
-            ? response = await fetch(`http://127.0.0.1:8000/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber)
-            : response = await fetch('http://127.0.0.1:8000/api/v1/articles/?page=' + pageNumber)
-        const data = await response.json()
-        setArticles(data.results) // после изменения состояния происходит рендеринг
-        // TODO: вместо цифры переменную с количество статей на первой странице
-        setTotalPages(Math.ceil(data.count / 10))
-        setCurrentPage(pageNumber)
-        setIsLoading(false)
-    }, [pathname, line])
 
+    useEffect(() => {
+        async function fetchData() {
+            setIsLoading(true)
+            const pageNumber = getPageNumber()
+            let response
+            params
+                ? response = await fetch(`http://127.0.0.1:8000/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber)
+                : response = await fetch('http://127.0.0.1:8000/api/v1/articles/?page=' + pageNumber)
+            const data = await response.json()
+            setArticles(data.results) // после изменения состояния происходит рендеринг
+            // TODO: вместо цифры переменную с количество статей на первой странице
+            setTotalPages(Math.ceil(data.count / 10))
+            setCurrentPage(pageNumber)
+            setIsLoading(false)
+        }
+        fetchData();
+      }, [pathname, line]);
 
     return (
         <div className="container-articles">
