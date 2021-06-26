@@ -10,9 +10,7 @@ function App() {
   return (
       <BrowserRouter>
         <AuthContext.Provider value={{refresh, access, validateAccess, validateRefresh, login, logout}}>
-          <div className="App">
             {routes}
-          </div>
         </AuthContext.Provider>
       </BrowserRouter>
   )

@@ -1,9 +1,12 @@
 import { useHistory } from "react-router";
-import { React, useEffect, useState, useRef, useContext } from 'react'
+import { React, useEffect, useState, useContext } from 'react'
 import { useLocation } from "react-router-dom"
 import { Pagination } from './Pagination'
 import { Article } from './Article'
 import { AuthContext } from '../context/AuthContext'
+import { HeaderIcons } from './HeaderIcons'
+import { BACKEND_URL } from '../variables'
+
 
 export const Profile = () => {
     const history = useHistory()
@@ -39,7 +42,7 @@ export const Profile = () => {
             const headers = {
                 'Authorization': 'Bearer ' + access
             }
-            let response = await fetch('http://127.0.0.1:8000/api/v1/articles/liked/?page=' + pageNumber, {
+            let response = await fetch(`${BACKEND_URL}/api/v1/articles/liked/?page=` + pageNumber, {
                 headers: headers
             })
             const data = await response.json()
@@ -56,13 +59,11 @@ export const Profile = () => {
         isLoading ? <h1>Загрузка...</h1>     
         : articles ?
         <div>
+            <div className="header">
             <div>
                 Profile
             </div>
-            <div className="header">
-                <button onClick={() => history.push('/login')}>
-                    {access ? 'Logout' : 'Login'}
-                </button>
+                <HeaderIcons />
             </div>
             <div className="list-articles-wrapper">
                 <div className="list-articles">

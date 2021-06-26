@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router"
 import axios from "axios"
+import { BACKEND_URL } from '../variables'
 
 
 export const NewPassword = ({ params }) => {
@@ -27,7 +28,7 @@ export const NewPassword = ({ params }) => {
             }
       
             try {
-               await axios.post(`http://127.0.0.1:8000/api/v1/users/password_reset/validate_token/`, body)
+               await axios.post(`${BACKEND_URL}/api/v1/users/password_reset/validate_token/`, body)
             } catch(e) {
                 setIsValidToken(false)
             //     "Введённый пароль  должен содержать как минимум 8 символов.",
@@ -49,7 +50,7 @@ export const NewPassword = ({ params }) => {
             }
 
             try {
-                await axios.post(`http://127.0.0.1:8000/api/v1/users/password_reset/confirm/`, body)
+                await axios.post(`${BACKEND_URL}/api/v1/users/password_reset/confirm/`, body)
                 history.push('/login')
             } catch(e) {
                 

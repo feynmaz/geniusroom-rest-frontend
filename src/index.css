@@ -184,6 +184,59 @@ div[disabled]
   color: #ff0000;
   margin-left: 12px;
 }
-.email-input {
-  margin: 10px 0;
+.form-group,
+.form-control {
+  margin-top: 10px;
+}
+.form-container {
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  width: 50%;
+  padding: 30px;
+  border: 2px solid #0d6efd;
+}
+.form-footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.forgot-password {
+  margin-left: 32px;
+}
+.link-to-registration {
+  margin-left: 32px;
+}
+.input-password {
+  margin-top: 8px;
+}
+.manage-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 25px;
+}
+.log-icon,
+.profile-icon,
+.home-icon {
+  width: 25px;
+  height: 25px;
+}
+.log-link,
+.profile-link,
+.home-link {
+  display: block;
+  cursor: pointer;
+  margin-right: 25px;
+}
+.log-link svg,
+.profile-link svg,
+.home-link svg {
+  transition: all .2s linear;
+}
+.log-link:hover svg,
+.profile-link:hover svg,
+.home-link:hover svg {
+  fill: #0d6efd;
 }

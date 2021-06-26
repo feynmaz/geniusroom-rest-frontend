@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react"
 import { useHistory } from "react-router"
+import { BACKEND_URL } from '../variables'
+
 
 const axios = require('axios');
 
@@ -22,7 +24,7 @@ export const PasswordReset = () => {
         }
 
         try {
-            await axios.post(`http://127.0.0.1:8000/api/v1/users/password_reset/`, 
+            await axios.post(`${BACKEND_URL}/api/v1/users/password_reset/`, 
             body)
             history.push(`/reset_done`)
         }
@@ -33,14 +35,16 @@ export const PasswordReset = () => {
     } 
 
     return (
-        <div>
+        <div className="form-container">
             <form action="">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
                 {!success && <span className="warning-message">Введите корректный Email</span>}
                 <input ref={input} onChange={(event) => {return changeEmailValue(event)}} type="email" class="form-control email-input" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
             </div>
-            <button type="button" class="btn btn-primary" onClick={resetPw}>Submit</button>
+            <div className="form-footer">
+                <button type="button" class="btn btn-primary" onClick={resetPw}>Submit</button>
+            </div>
             </form>
         </div>
     )

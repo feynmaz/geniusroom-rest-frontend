@@ -1,5 +1,7 @@
 import { React, useState, useRef, useEffect } from 'react'
-import { useHistory } from "react-router";
+import { useHistory } from "react-router"
+import { BACKEND_URL } from '../variables'
+
 
 export const Menu = ({ changeStyleBlockArticles }) => {
     const [rubrics, setRubrics] = useState([])
@@ -21,7 +23,7 @@ export const Menu = ({ changeStyleBlockArticles }) => {
     }
 
     useEffect(async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/v1/articles/rubrics/')
+        const response = await fetch(`${BACKEND_URL}/api/v1/articles/rubrics/`)
         const data = await response.json()
         setRubrics(data)
     }, [])

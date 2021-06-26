@@ -1,20 +1,18 @@
-import { React, useEffect, useState, useRef, useContext } from 'react'
+import { React, useEffect, useState, useRef } from 'react'
 import { useLocation } from "react-router-dom"
-import { useHistory } from "react-router"
 import { Pagination } from './Pagination'
 import { Article } from './Article'
 import { Menu } from './Menu'
-import { AuthContext } from '../context/AuthContext'
+import { HeaderIcons } from './HeaderIcons'
+import { BACKEND_URL } from '../variables'
+
 
 export const ArticleList = ({ params }) => {
-    const history = useHistory()
     const location = useLocation()
     const [totalPages, setTotalPages] = useState()
     const [currentPage, setCurrentPage] = useState(1)
     const [articles, setArticles] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-
-    const { access } = useContext(AuthContext)
 
     const listArticles = useRef()
 
@@ -48,8 +46,8 @@ export const ArticleList = ({ params }) => {
             const pageNumber = getPageNumber()
             let response
             params
-                ? response = await fetch(`http://127.0.0.1:8000/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber)
-                : response = await fetch('http://127.0.0.1:8000/api/v1/articles/?page=' + pageNumber)
+                ? response = await fetch(`${BACKEND_URL}/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber)
+                : response = await fetch(`${BACKEND_URL}/api/v1/articles/?page=` + pageNumber)
             const data = await response.json()
             setArticles(data.results) // после изменения состояния происходит рендеринг
             // TODO: вместо цифры переменную с количество статей на первой странице
@@ -64,12 +62,7 @@ export const ArticleList = ({ params }) => {
         <div className="container-articles">
             <div className="header">
                 <Menu changeStyleBlockArticles={changeStyleBlockArticles} />
-                <button disabled={!access} onClick={() => history.push('/profile')}>
-                    Профиль
-                </button>
-                <button onClick={() => history.push('/login')}>
-                    {access ? 'Logout' : 'Login'}
-                </button>
+                <HeaderIcons />
             </div>
             <div className="list-articles-wrapper">
                 <div ref={listArticles} className="list-articles">
