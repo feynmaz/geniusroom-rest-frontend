@@ -1,2 +1,2 @@
 
-export const BACKEND_URL = process.env.BACKEND_URL
+export const BACKEND_URL = 'https://geniusroom-rest-backend.herokuapp.com'

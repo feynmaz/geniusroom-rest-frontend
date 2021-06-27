@@ -58,13 +58,14 @@ export const ArticleDetail = ({id}) => {
         const refactored = refactorComments(dataArticle['comments']) 
         setComments(refactored)
 
-        const headers = {
-            'Authorization': 'Bearer ' + access,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',           
-        }
+
         const responceRatingByUser = await fetch(`${BACKEND_URL}/api/v1/articles/${id}/rating_by_this_user/`, {
-            headers: headers
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + access,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',           
+            }
         })
         const dataResponceRatingByUser = await responceRatingByUser.json()
         switch (dataResponceRatingByUser['rating_change']){
