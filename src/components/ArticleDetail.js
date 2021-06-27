@@ -43,7 +43,12 @@ export const ArticleDetail = ({id}) => {
         if (!access) return
 
         async function fetchData() {
-        const responseArticle = await fetch(`${BACKEND_URL}/api/v1/articles/${id}/`)
+        const responseArticle = await fetch(`${BACKEND_URL}/api/v1/articles/${id}/`, {
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+               }
+        })
         const dataArticle = await responseArticle.json()
         
         setArticle(dataArticle) // после изменения состояния происходит рендеринг
@@ -54,7 +59,9 @@ export const ArticleDetail = ({id}) => {
         setComments(refactored)
 
         const headers = {
-            'Authorization': 'Bearer ' + access
+            'Authorization': 'Bearer ' + access,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',           
         }
         const responceRatingByUser = await fetch(`${BACKEND_URL}/api/v1/articles/${id}/rating_by_this_user/`, {
             headers: headers
@@ -87,7 +94,9 @@ export const ArticleDetail = ({id}) => {
     const changeRating = async (change) => {
         const access = await validateAccess(history)
         const headers = {
-            'Authorization': 'Bearer ' + access
+            'Authorization': 'Bearer ' + access,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
         }
         const body = {
             rating_change: change
@@ -111,8 +120,9 @@ export const ArticleDetail = ({id}) => {
     const addComment = async () => {
         const access = validateAccess(history)
         const headers = {
+            'Authorization': 'Bearer ' + access,
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + access
+            'Accept': 'application/json',     
         }
         const body = {
             content: commentText

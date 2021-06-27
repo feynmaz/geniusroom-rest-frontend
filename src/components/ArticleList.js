@@ -46,8 +46,18 @@ export const ArticleList = ({ params }) => {
             const pageNumber = getPageNumber()
             let response
             params
-                ? response = await fetch(`${BACKEND_URL}/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber)
-                : response = await fetch(`${BACKEND_URL}/api/v1/articles/?page=` + pageNumber)
+                ? response = await fetch(`${BACKEND_URL}/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber, {
+                    headers : { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                       }
+                })
+                : response = await fetch(`${BACKEND_URL}/api/v1/articles/?page=` + pageNumber, {
+                    headers : { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                       }
+                })
             const data = await response.json()
             setArticles(data.results) // после изменения состояния происходит рендеринг
             // TODO: вместо цифры переменную с количество статей на первой странице

@@ -40,7 +40,9 @@ export const Profile = () => {
             const pageNumber = getPageNumber()
             const access = await validateAccess(history)
             const headers = {
-                'Authorization': 'Bearer ' + access
+                'Authorization': 'Bearer ' + access,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
             }
             let response = await fetch(`${BACKEND_URL}/api/v1/articles/liked/?page=` + pageNumber, {
                 headers: headers

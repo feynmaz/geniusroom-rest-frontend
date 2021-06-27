@@ -28,7 +28,14 @@ export const NewPassword = ({ params }) => {
             }
       
             try {
-               await axios.post(`${BACKEND_URL}/api/v1/users/password_reset/validate_token/`, body)
+               await fetch(`${BACKEND_URL}/api/v1/users/password_reset/validate_token/`, {
+                    method: 'POST',
+                    headers : { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+               })
             } catch(e) {
                 setIsValidToken(false)
             //     "Введённый пароль  должен содержать как минимум 8 символов.",
@@ -41,7 +48,7 @@ export const NewPassword = ({ params }) => {
     }, [])
 
     async function changePassword(){
-        if(password1 && password2 && password1 == password2){
+        if(password1 && password2 && password1 === password2){
             const token = params['token']
 
             const body = {
@@ -50,7 +57,14 @@ export const NewPassword = ({ params }) => {
             }
 
             try {
-                await axios.post(`${BACKEND_URL}/api/v1/users/password_reset/confirm/`, body)
+                await fetch(`${BACKEND_URL}/api/v1/users/password_reset/confirm/`, {
+                    method: 'POST',
+                    headers : { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
                 history.push('/login')
             } catch(e) {
                 

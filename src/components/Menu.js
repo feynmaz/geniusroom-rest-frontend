@@ -22,11 +22,19 @@ export const Menu = ({ changeStyleBlockArticles }) => {
         history.push('/' + event.target.dataset.link)
     }
 
-    useEffect(async () => {
-        const response = await fetch(`${BACKEND_URL}/api/v1/articles/rubrics/`)
-        const data = await response.json()
-        setRubrics(data)
-    }, [])
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`${BACKEND_URL}/api/v1/articles/rubrics/`, {
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                   }
+            })
+            const data = await response.json()
+            setRubrics(data)
+        }
+        fetchData()
+      }, [])
 
     let superRubric = ''
 

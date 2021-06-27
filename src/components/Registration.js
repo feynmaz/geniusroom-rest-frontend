@@ -27,7 +27,14 @@ export const Register = () => {
             last_name: form.lastName,
             password: form.password,
         }
-        const createdUser = await axios.post(`${BACKEND_URL}/api/v1/users/register/`, body)
+        const createdUser = await fetch(`${BACKEND_URL}/api/v1/users/register/`, {
+            method: 'POST',
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
         if (createdUser) {
             history.push('/login')
         }

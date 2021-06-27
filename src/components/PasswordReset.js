@@ -24,8 +24,14 @@ export const PasswordReset = () => {
         }
 
         try {
-            await axios.post(`${BACKEND_URL}/api/v1/users/password_reset/`, 
-            body)
+            await fetch(`${BACKEND_URL}/api/v1/users/password_reset/`, {
+                method: 'POST',
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(body)    
+            })
             history.push(`/reset_done`)
         }
         catch (e){
