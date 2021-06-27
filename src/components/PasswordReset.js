@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react"
 import { useHistory } from "react-router"
-import { BACKEND_URL } from '../variables'
 
 
 const axios = require('axios');
@@ -24,7 +23,7 @@ export const PasswordReset = () => {
         }
 
         try {
-            await fetch(`${BACKEND_URL}/api/v1/users/password_reset/`, {
+            await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/password_reset/`, {
                 method: 'POST',
                 headers : { 
                     'Content-Type': 'application/json',

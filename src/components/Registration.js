@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react"
 import { useHistory } from "react-router"
 import axios from "axios"
-import { BACKEND_URL } from '../variables'
 
 
 export const Register = () => {
@@ -27,7 +26,7 @@ export const Register = () => {
             last_name: form.lastName,
             password: form.password,
         }
-        const createdUser = await fetch(`${BACKEND_URL}/api/v1/users/register/`, {
+        const createdUser = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/register/`, {
             method: 'POST',
             headers : { 
                 'Content-Type': 'application/json',

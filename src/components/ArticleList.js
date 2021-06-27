@@ -4,7 +4,6 @@ import { Pagination } from './Pagination'
 import { Article } from './Article'
 import { Menu } from './Menu'
 import { HeaderIcons } from './HeaderIcons'
-import { BACKEND_URL } from '../variables'
 
 
 export const ArticleList = ({ params }) => {
@@ -46,13 +45,13 @@ export const ArticleList = ({ params }) => {
             const pageNumber = getPageNumber()
             let response
             params
-                ? response = await fetch(`${BACKEND_URL}/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber, {
+                ? response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber, {
                     headers : { 
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                        }
                 })
-                : response = await fetch(`${BACKEND_URL}/api/v1/articles/?page=` + pageNumber, {
+                : response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/?page=` + pageNumber, {
                     headers : { 
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'

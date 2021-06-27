@@ -5,7 +5,6 @@ import { Pagination } from './Pagination'
 import { Article } from './Article'
 import { AuthContext } from '../context/AuthContext'
 import { HeaderIcons } from './HeaderIcons'
-import { BACKEND_URL } from '../variables'
 
 
 export const Profile = () => {
@@ -44,7 +43,7 @@ export const Profile = () => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             }
-            let response = await fetch(`${BACKEND_URL}/api/v1/articles/liked/?page=` + pageNumber, {
+            let response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/liked/?page=` + pageNumber, {
                 headers: headers
             })
             const data = await response.json()

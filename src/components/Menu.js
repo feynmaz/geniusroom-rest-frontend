@@ -1,6 +1,5 @@
 import { React, useState, useRef, useEffect } from 'react'
 import { useHistory } from "react-router"
-import { BACKEND_URL } from '../variables'
 
 
 export const Menu = ({ changeStyleBlockArticles }) => {
@@ -24,7 +23,7 @@ export const Menu = ({ changeStyleBlockArticles }) => {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`${BACKEND_URL}/api/v1/articles/rubrics/`, {
+            const response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/rubrics/`, {
                 headers : { 
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
