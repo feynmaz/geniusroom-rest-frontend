@@ -9,8 +9,8 @@ import { Link } from "react-router-dom"
 export const ArticleDetail = ({id}) => {
     const history = useHistory()
 
-    const [ratingUpDisabled, setRatingUpDisabled] = useState(false)
-    const [ratingDownDisabled, setRatingDownDisabled] = useState(false)
+    const [ratingUpDisabled, setRatingUpDisabled] = useState(true)
+    const [ratingDownDisabled, setRatingDownDisabled] = useState(true)
 
     const [article, setArticle] = useState()
     const [rating, setRating] = useState()
@@ -38,8 +38,6 @@ export const ArticleDetail = ({id}) => {
     }
 
     useEffect(() => {
-        if (!access) return
-
         async function fetchData() {
         const responseArticle = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/`, {
             headers : { 
@@ -56,33 +54,33 @@ export const ArticleDetail = ({id}) => {
         const refactored = refactorComments(dataArticle['comments']) 
         setComments(refactored)
 
-
-        const responceRatingByUser = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/rating_by_this_user/`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + access,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',           
-            }
-        })
-        const dataResponceRatingByUser = await responceRatingByUser.json()
-        switch (dataResponceRatingByUser['rating_change']){
-            case 1:
-                setRatingDownDisabled(false)
-                setRatingUpDisabled(true)
-                break
-            case -1:
-                setRatingDownDisabled(true)
-                setRatingUpDisabled(false)
-                break
-            case 0:
-                setRatingDownDisabled(false)
-                setRatingUpDisabled(false)
-                break
-            default:
-                break
-        } 
-      
+        if (access){
+            const responceRatingByUser = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/rating_by_this_user/`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + access,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',           
+                }
+            })
+            const dataResponceRatingByUser = await responceRatingByUser.json()
+            switch (dataResponceRatingByUser['rating_change']){
+                case 1:
+                    setRatingDownDisabled(false)
+                    setRatingUpDisabled(true)
+                    break
+                case -1:
+                    setRatingDownDisabled(true)
+                    setRatingUpDisabled(false)
+                    break
+                case 0:
+                    setRatingDownDisabled(false)
+                    setRatingUpDisabled(false)
+                    break
+                default:
+                    break
+            } 
+        }
         setIsLoading(false)
     }
     fetchData()
