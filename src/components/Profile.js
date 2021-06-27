@@ -43,7 +43,7 @@ export const Profile = () => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             }
-            let response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/liked/?page=` + pageNumber, {
+            let response = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/liked/?page=` + pageNumber, {
                 headers: headers
             })
             const data = await response.json()

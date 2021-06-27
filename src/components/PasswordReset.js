@@ -23,7 +23,7 @@ export const PasswordReset = () => {
         }
 
         try {
-            await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/password_reset/`, {
+            await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/users/password_reset/`, {
                 method: 'POST',
                 headers : { 
                     'Content-Type': 'application/json',

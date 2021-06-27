@@ -26,7 +26,7 @@ export const NewPassword = ({ params }) => {
             }
       
             try {
-               await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/password_reset/validate_token/`, {
+               await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/users/password_reset/validate_token/`, {
                     method: 'POST',
                     headers : { 
                         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const NewPassword = ({ params }) => {
             }
 
             try {
-                await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/password_reset/confirm/`, {
+                await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/users/password_reset/confirm/`, {
                     method: 'POST',
                     headers : { 
                         'Content-Type': 'application/json',

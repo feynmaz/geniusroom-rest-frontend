@@ -23,7 +23,7 @@ export const Login = () => {
             username: form.username,
             password: form.password,
         }
-        const jwt = await axios.post(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/token/`, body, {
+        const jwt = await axios.post(`https://geniusroom-rest-backend.herokuapp.com/api/v1/users/token/`, body, {
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

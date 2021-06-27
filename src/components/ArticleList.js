@@ -45,13 +45,13 @@ export const ArticleList = ({ params }) => {
             const pageNumber = getPageNumber()
             let response
             params
-                ? response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber, {
+                ? response = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${params.superRubric}/${params.rubric}/?page=` + pageNumber, {
                     headers : { 
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                        }
                 })
-                : response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/?page=` + pageNumber, {
+                : response = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/?page=` + pageNumber, {
                     headers : { 
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'

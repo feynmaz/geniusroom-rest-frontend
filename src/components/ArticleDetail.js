@@ -41,7 +41,7 @@ export const ArticleDetail = ({id}) => {
         if (!access) return
 
         async function fetchData() {
-        const responseArticle = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/${id}/`, {
+        const responseArticle = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/`, {
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -57,7 +57,7 @@ export const ArticleDetail = ({id}) => {
         setComments(refactored)
 
 
-        const responceRatingByUser = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/${id}/rating_by_this_user/`, {
+        const responceRatingByUser = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/rating_by_this_user/`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + access,
@@ -100,7 +100,7 @@ export const ArticleDetail = ({id}) => {
         const body = {
             rating_change: change
         }  
-        const updatedRating = await axios.patch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/${id}/rating/`, body, {
+        const updatedRating = await axios.patch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/rating/`, body, {
                 headers: headers
             })
         setRating(updatedRating.data['rating']) 
@@ -126,7 +126,7 @@ export const ArticleDetail = ({id}) => {
         const body = {
             content: commentText
         }
-        const comment = await axios.post(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/${id}/create_comment/`,
+        const comment = await axios.post(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/${id}/create_comment/`,
             body,
             {
                 headers: headers

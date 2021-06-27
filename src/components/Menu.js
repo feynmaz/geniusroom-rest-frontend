@@ -23,7 +23,7 @@ export const Menu = ({ changeStyleBlockArticles }) => {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/articles/rubrics/`, {
+            const response = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/articles/rubrics/`, {
                 headers : { 
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'

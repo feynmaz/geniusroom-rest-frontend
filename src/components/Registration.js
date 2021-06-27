@@ -26,7 +26,7 @@ export const Register = () => {
             last_name: form.lastName,
             password: form.password,
         }
-        const createdUser = await fetch(`${https://geniusroom-rest-backend.herokuapp.com}/api/v1/users/register/`, {
+        const createdUser = await fetch(`https://geniusroom-rest-backend.herokuapp.com/api/v1/users/register/`, {
             method: 'POST',
             headers : { 
                 'Content-Type': 'application/json',
