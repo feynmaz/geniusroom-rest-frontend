@@ -1,4 +1,4 @@
-# gr-rest-client
+# geniusroom-rest-frontend
 
 Клиентская часть сайта geniusroom-rest
 
