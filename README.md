@@ -1,5 +1,5 @@
 # geniusroom-rest-frontend
 
-Клиентская часть сайта geniusroom-rest
+client side of "geniusroom-rest"
 
-Работает: https://geniusroom-rest-frontend.vercel.app/
+url: https://geniusroom-rest-frontend.vercel.app/
